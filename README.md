@@ -6,9 +6,10 @@ domains.
 
 ## Repository status
 
-The frontend engineering and agentic-development foundation is present; the
-application scaffold has not yet been implemented. The first ready card is in
-[`TASKS.md`](TASKS.md).
+The Phase 0 browser foundation is implemented as a small responsive shell. It
+shows backend readiness when `CONTOUR_API_URL` is configured and keeps all
+planned product surfaces visibly unavailable until their APIs are published.
+The active work queue is in [`TASKS.md`](TASKS.md).
 
 The backend currently publishes only liveness and readiness endpoints. Planned
 workspace, source, ingestion, search, entity, relationship, evidence, and run
@@ -24,6 +25,35 @@ contract.
 5. [API contract synchronization](contracts/README.md)
 
 Repository-wide coding-agent instructions live in [AGENTS.md](AGENTS.md).
+
+## Local development
+
+Use Node.js 20 or newer (the repository includes an `.nvmrc`), then install the
+locked dependencies and start the development server:
+
+```shell
+npm ci
+cp .env.example .env.local
+npm run dev
+```
+
+The shell works without a backend and reports that state honestly. Set
+`CONTOUR_API_URL` in `.env.local` to the backend origin to enable the published
+readiness check. No credentials belong in this file or in the browser bundle.
+
+Before committing, run:
+
+```shell
+npm run format:check
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run check:contract /path/to/contour.openapi.json
+```
+
+The contract command needs the paired backend artifact; without an explicit
+path it looks for `../contour/openapi/contour.openapi.json`.
 
 ## Contract synchronization
 
