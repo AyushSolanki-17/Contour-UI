@@ -45,6 +45,13 @@ the bounded execution queue.
 - A specific user request may supersede the queue; do not add it unless the user
   or coordinator requests bookkeeping.
 
+## Commit convention
+
+Use Conventional Commits for all new commits. Format commit subjects as
+`type(scope): summary`, using a lowercase imperative summary and a type such as
+`feat`, `fix`, `docs`, `test`, `refactor`, `build`, or `chore`. Use a concise,
+specific scope when it clarifies the affected area; otherwise omit the scope.
+
 ## Repository boundary
 
 This repository owns the browser application, frontend components, client-side
