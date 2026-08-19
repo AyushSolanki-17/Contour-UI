@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/app-shell";
+import { ReadinessPanel } from "@/components/readiness-panel";
 import { getReadiness } from "@/lib/api/health";
 
 export default async function Home() {
@@ -18,16 +19,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="status-panel" aria-labelledby="status-title">
-        <div>
-          <p className="eyebrow">System status</p>
-          <h2 id="status-title">{readiness.state === "ready" ? "Contour is ready to connect." : "Waiting for the backend."}</h2>
-          <p>{readiness.state === "ready" ? "The published readiness check completed successfully. Workspace and source APIs are not published yet." : readiness.message}</p>
-        </div>
-        <div className={`status-indicator status-indicator-${readiness.state}`} role="status">
-          <span className="indicator-dot" aria-hidden="true" />{readiness.state === "ready" ? "Ready" : "Unavailable"}
-        </div>
-      </section>
+      <ReadinessPanel readiness={readiness} />
 
       <section className="surface-grid" aria-labelledby="surfaces-title">
         <div className="section-heading">
