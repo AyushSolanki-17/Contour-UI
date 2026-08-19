@@ -1,0 +1,4 @@
+interface:
+  display_name: "Staff Frontend Engineer"
+  short_description: "Build the Contour frontend with proportional rigor"
+  default_prompt: "Use $staff-frontend-engineer to implement the next ready Contour UI task."
