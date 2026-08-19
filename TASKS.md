@@ -12,9 +12,9 @@ private product task `PROD-P0-01` without copying private planning context.
 ### FE-P0-01 — Establish the frontend application foundation
 
 Owner role: frontend
-Assignee: unassigned
+Assignee: frontend
 Priority: P1
-Status: ready
+Status: accepted
 Depends on: none
 Product: `PROD-P0-01`
 Contract: `contracts/contour.openapi.json` (health endpoints only)
@@ -59,6 +59,10 @@ already available.
 An implementer moves this card to `in-progress` when claimed and to `review`
 with commands and browser evidence when complete. A separate reviewer accepts
 and archives it.
+
+Accepted review: readiness retry and runtime health validation added; static
+checks, production build, contract comparison, and desktop/mobile browser DOM
+inspection pass.
 
 ## Scheduled follow-ups
 

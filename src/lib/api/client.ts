@@ -17,7 +17,11 @@ export function getApiOrigin(): string | undefined {
   return origin ? origin.replace(/\/$/, "") : undefined;
 }
 
-export async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
+export async function getJson<T>(
+  path: string,
+  validate: (value: unknown) => value is T,
+  signal?: AbortSignal,
+): Promise<T> {
   const origin = getApiOrigin();
   if (!origin) throw new ApiError("The Contour backend origin is not configured.");
 
@@ -40,7 +44,11 @@ export async function getJson<T>(path: string, signal?: AbortSignal): Promise<T>
       const code = typeof body?.error?.code === "string" ? body.error.code : undefined;
       throw new ApiError(message, { code, status: response.status });
     }
-    return (await response.json()) as T;
+    const body: unknown = await response.json();
+    if (!validate(body)) {
+      throw new ApiError("The Contour backend returned an invalid response.");
+    }
+    return body;
   } catch (error) {
     if (error instanceof ApiError) throw error;
     if (error instanceof Error && error.name === "AbortError") {
