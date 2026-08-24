@@ -20,4 +20,5 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npm run check:contract -- contracts/contour.openapi.json
       - run: npm run build
