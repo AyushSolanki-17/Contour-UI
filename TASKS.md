@@ -1,6 +1,6 @@
 # Contour UI Active Work
 
-**Status:** one ready foundation-hardening card; two cards in review; three contract-gated follow-ups
+**Status:** one ready foundation-hardening card; one card in review; one blocked card; three contract-gated follow-ups
 **Updated:** 2026-08-24
 
 This is the bounded frontend execution queue. It is derived from the local
@@ -19,7 +19,7 @@ at a time and hands it to review before claiming another.
 Owner role: frontend
 Assignee: frontend
 Priority: P1
-Status: review
+Status: blocked
 Depends on: `FE-P0-01` (accepted)
 Product: `PROD-P0-01`
 Contract: `contracts/contour.openapi.json` (health endpoints only)
@@ -92,21 +92,18 @@ repeatable acceptance path that protects honest availability and recovery.
 
 #### Acceptance criteria
 
-- [x] A clean checkout can run one documented browser command that proves the
+- [ ] A clean checkout can run one documented browser command that proves the
       foundation journey at representative desktop and mobile widths.
-- [x] Keyboard focus and unavailable controls remain semantically and visually
+- [ ] Keyboard focus and unavailable controls remain semantically and visually
       distinguishable in the automated journey.
-- [x] Backend failure and retry never appear as successful product readiness.
-- [x] Browser, format, lint, strict type, build, and contract checks pass in CI.
+- [ ] Backend failure and retry never appear as successful product readiness.
+- [ ] Browser, format, lint, strict type, build, and contract checks pass in CI.
 
 #### Handoff
 
-Ready for review. `npm run test:browser` builds the app and executes three
-Chromium checks against a local fixture that serves only the published readiness
-responses. The checks cover ready, slow/unavailable, and retry recovery at
-desktop and mobile widths; keyboard focus; unavailable navigation semantics;
-console errors; and unexpected backend paths. CI installs Chromium, runs the
-browser command, and verifies the pinned contract.
+Blocked by the explicit decision not to add browser-dependent tests. The
+browser suite and its CI dependency were removed; resume this card only if a
+browser acceptance command is later authorized.
 
 ### FE-P0-07 — Reconcile frontend documentation with the accepted foundation
 

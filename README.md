@@ -48,20 +48,12 @@ npm run format:check
 npm run lint
 npm run typecheck
 npm test
-npm run test:browser
 npm run build
 npm run check:contract /path/to/contour.openapi.json
 ```
 
 The contract command needs the paired backend artifact; without an explicit
 path it looks for `../contour/openapi/contour.openapi.json`.
-
-`npm run test:browser` builds the app and verifies the responsive shell against
-a local health-contract fixture. Install its browser once after `npm ci` with:
-
-```shell
-npx playwright install chromium
-```
 
 ## Contract synchronization
 
