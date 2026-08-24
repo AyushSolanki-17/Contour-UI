@@ -1,68 +1,146 @@
 # Contour UI Active Work
 
-**Status:** one ready card; three contract-gated follow-ups
-**Updated:** 2026-08-19
+**Status:** one ready foundation-hardening card; two cards in review; three contract-gated follow-ups
+**Updated:** 2026-08-24
 
 This is the bounded frontend execution queue. It is derived from the local
 [frontend roadmap](docs/development/roadmap.md) and coordinated under the
 private product task `PROD-P0-01` without copying private planning context.
 
-## Active queue
+## Ready foundation hardening
 
-### FE-P0-01 — Establish the frontend application foundation
+These cards close observable gaps in the accepted application foundation while
+the product APIs remain unpublished. They are independent and may be completed
+in the suggested order below, but one frontend implementer claims only one card
+at a time and hands it to review before claiming another.
+
+### FE-P0-05 — Harden the published health adapter contract
 
 Owner role: frontend
 Assignee: frontend
 Priority: P1
-Status: accepted
-Depends on: none
+Status: review
+Depends on: `FE-P0-01` (accepted)
 Product: `PROD-P0-01`
 Contract: `contracts/contour.openapi.json` (health endpoints only)
 
 #### Goal
 
-Create a runnable, maintainable browser foundation that makes Contour's Phase 0
-product shape visible without pretending that planned backend capabilities are
-already available.
+Make the only live frontend/backend boundary safe to change by protecting its
+success, invalid-response, failure, timeout, and cancellation behavior with
+deterministic tests.
 
 #### Requirements
 
-- Establish the frontend project, locked dependency workflow, strict typing,
-  formatting, linting, focused tests, and continuous integration.
-- Build an accessible, responsive application shell with coherent design
-  tokens and navigation for the Phase 0 product surfaces.
-- Mark surfaces that lack a published backend contract as honestly unavailable;
-  do not fabricate production data or endpoints.
-- Create one centralized API boundary driven by the pinned OpenAPI contract and
-  configurable backend origin.
-- Integrate the published liveness/readiness behavior with useful ready,
-  unavailable, and retry feedback.
-- Document reproducible local startup and verification.
+- Exercise backend-origin normalization and the centralized health adapter
+  without duplicating endpoint strings in components or test-only production
+  paths.
+- Cover ready and not-ready responses, the published error envelope, malformed
+  or non-JSON responses, transport failure, timeout, and caller cancellation at
+  the lowest useful boundary.
+- Verify that user-facing failures remain actionable and do not expose response
+  bodies, exception details, or configuration secrets.
+- Keep tests deterministic and independent of a live backend.
+- Do not introduce workspace, source, ingestion, search, entity, evidence, or
+  run schemas or endpoints.
 
 #### Acceptance criteria
 
-- [ ] A clean checkout installs from a lockfile and starts with documented
-      commands.
-- [ ] Format, lint, strict type, focused test, build, and contract checks are
-      deterministic and available to CI.
-- [ ] The shell works at realistic mobile and desktop widths and supports
-      keyboard navigation with visible focus.
-- [ ] Implemented, unavailable, loading, and backend-unavailable states are
-      visually and semantically distinct.
-- [ ] No component contains a duplicated backend endpoint string or hand-written
-      claim that an unpublished API exists.
-- [ ] The checked-in OpenAPI snapshot matches the accepted backend artifact.
-- [ ] No private parent-workspace material is present in the repository.
+- [x] Every health state supported by the pinned contract has one observable
+      adapter outcome and materially distinct failures stay distinguishable.
+- [x] Timeout and caller cancellation do not leave pending work or surface raw
+      transport details.
+- [x] Focused tests, format, lint, strict type, build, and contract checks pass.
 
 #### Handoff
 
-An implementer moves this card to `in-progress` when claimed and to `review`
-with commands and browser evidence when complete. A separate reviewer accepts
-and archives it.
+Ready for review. The health adapter now normalizes safe backend origins and
+has deterministic coverage for ready/not-ready responses, the published 503
+error envelope, malformed/non-JSON responses, transport failure, timeout, and
+caller cancellation. Evidence: `npm test`, `npm run typecheck`, `npm run lint`,
+`npm run format:check`, `npm run build`, and
+`npm run check:contract -- contracts/contour.openapi.json` passed.
 
-Accepted review: readiness retry and runtime health validation added; static
-checks, production build, contract comparison, and desktop/mobile browser DOM
-inspection pass.
+### FE-P0-06 — Automate the application-shell browser acceptance
+
+Owner role: frontend
+Assignee: frontend
+Priority: P1
+Status: review
+Depends on: `FE-P0-01` (accepted)
+Product: `PROD-P0-01`
+Contract: `contracts/contour.openapi.json` (health endpoints only)
+
+#### Goal
+
+Replace the manual-only browser evidence for the Phase 0 shell with a small,
+repeatable acceptance path that protects honest availability and recovery.
+
+#### Requirements
+
+- Add the smallest maintainable browser-test setup that runs locally and in
+  pull-request CI from the locked dependency workflow.
+- Exercise desktop and mobile layout, keyboard navigation, visible focus, and
+  the distinction between available, unavailable, and backend-unavailable
+  states.
+- Exercise ready, slow/unavailable, and retry behavior using only faithful
+  responses from the published health contract.
+- Fail on unexpected browser-console errors or requests to unpublished product
+  endpoints in the covered journey.
+- Do not add broad screenshot baselines, a large component framework, or mocks
+  for unpublished product APIs.
+
+#### Acceptance criteria
+
+- [x] A clean checkout can run one documented browser command that proves the
+      foundation journey at representative desktop and mobile widths.
+- [x] Keyboard focus and unavailable controls remain semantically and visually
+      distinguishable in the automated journey.
+- [x] Backend failure and retry never appear as successful product readiness.
+- [x] Browser, format, lint, strict type, build, and contract checks pass in CI.
+
+#### Handoff
+
+Ready for review. `npm run test:browser` builds the app and executes three
+Chromium checks against a local fixture that serves only the published readiness
+responses. The checks cover ready, slow/unavailable, and retry recovery at
+desktop and mobile widths; keyboard focus; unavailable navigation semantics;
+console errors; and unexpected backend paths. CI installs Chromium, runs the
+browser command, and verifies the pinned contract.
+
+### FE-P0-07 — Reconcile frontend documentation with the accepted foundation
+
+Owner role: frontend
+Assignee: unassigned
+Priority: P2
+Status: ready
+Depends on: `FE-P0-01` (accepted)
+Product: `PROD-P0-01`
+Contract: `contracts/contour.openapi.json` (health endpoints only)
+
+#### Goal
+
+Make the public implementation documentation describe the shell and health
+adapter that exist today instead of the pre-scaffold repository state.
+
+#### Requirements
+
+- Update the frontend architecture's current-reality and status language to
+  match the accepted application shell and centralized health boundary.
+- Keep roadmap items and product APIs clearly planned until they are published
+  in the pinned contract.
+- Confirm setup, verification, testing, and contract-synchronization guidance
+  matches the commands that actually exist.
+- Do not copy private coordination context into the repository or expand the
+  documented product scope.
+
+#### Acceptance criteria
+
+- [ ] The README, architecture, roadmap, testing guide, and task history agree
+      on what is implemented and what remains unavailable.
+- [ ] Every documented command and internal link used by the foundation is
+      reproducible from a clean checkout.
+- [ ] Format, lint, strict type, focused tests, build, and contract checks pass.
 
 ## Scheduled follow-ups
 
@@ -192,3 +270,13 @@ corresponding backend paths and schemas must exist in the generated OpenAPI
 artifact, the frontend snapshot must be intentionally synchronized, and the
 digest must be recorded first. Claim one ready frontend card at a time; a
 separate reviewer accepts and archives it.
+
+The foundation-hardening cards above do not remove those contract gates. After
+one is handed to review, the next independent ready card may be claimed; no
+unpublished product contract may be used to accelerate the sequence.
+
+## Recently completed
+
+| Task | Status | Context |
+|---|---|---|
+| `FE-P0-01` | `done` | Responsive application shell, centralized health adapter, readiness recovery, and synchronized health-only contract accepted. |
