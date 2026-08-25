@@ -62,7 +62,7 @@ browser acceptance command is later authorized.
 Owner role: frontend
 Assignee: Codex
 Priority: P2
-Status: in-progress
+Status: review
 Depends on: `FE-P0-01` (accepted)
 Product: `PROD-P0-01`
 Contract: `contracts/contour.openapi.json` (health endpoints only)
@@ -85,11 +85,21 @@ adapter that exist today instead of the pre-scaffold repository state.
 
 #### Acceptance criteria
 
-- [ ] The README, architecture, roadmap, testing guide, and task history agree
+- [x] The README, architecture, roadmap, testing guide, and task history agree
       on what is implemented and what remains unavailable.
-- [ ] Every documented command and internal link used by the foundation is
+- [x] Every documented command and internal link used by the foundation is
       reproducible from a clean checkout.
-- [ ] Format, lint, strict type, focused tests, build, and contract checks pass.
+- [x] Format, lint, strict type, focused tests, build, and contract checks pass.
+
+#### Handoff
+
+Ready for review. The public docs now describe the accepted App Router shell,
+centralized health adapter, seven focused tests, health-only contract, and
+explicitly absent browser automation without promoting later product surfaces.
+Evidence: all internal Markdown links across the repository documentation were
+validated; `npm run format:check`, `npm run lint`, `npm run typecheck`,
+`npm test` (7 passed), `npm run build`, and `npm run check:contract` against the
+paired backend artifact passed.
 
 ## Scheduled follow-ups
 
