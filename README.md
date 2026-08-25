@@ -28,8 +28,8 @@ Repository-wide coding-agent instructions live in [AGENTS.md](AGENTS.md).
 
 ## Local development
 
-Use Node.js 20 or newer (the repository includes an `.nvmrc`), then install the
-locked dependencies and start the development server:
+Use Node.js 20.9 or newer (the repository includes an `.nvmrc`), then install
+the locked dependencies and start the development server:
 
 ```shell
 npm ci
@@ -49,11 +49,15 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
-npm run check:contract /path/to/contour.openapi.json
+npm run check:contract -- /path/to/contour.openapi.json
 ```
 
-The contract command needs the paired backend artifact; without an explicit
-path it looks for `../contour/openapi/contour.openapi.json`.
+`npm test` runs the focused health-adapter and health-contract tests. There is
+currently no browser-test command or browser-test dependency; automated browser
+acceptance remains explicitly blocked in [`TASKS.md`](TASKS.md).
+
+The contract command needs the paired backend artifact. Without an explicit
+path, it looks for `../contour/openapi/contour.openapi.json`.
 
 ## Contract synchronization
 

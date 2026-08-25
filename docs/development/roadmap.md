@@ -1,7 +1,7 @@
 # Frontend Development Roadmap
 
-**Status:** planned; Phase 0 foundation is active
-**Updated:** 2026-08-19
+**Status:** Phase 0 foundation active; shell and health boundary accepted
+**Updated:** 2026-08-25
 
 ## Planning rule
 
@@ -11,14 +11,19 @@ does not authorize speculative screens or APIs.
 
 ## Phase 0 sequence
 
-### 0.1 — Application foundation
+### 0.1 — Application foundation (accepted implementation; browser automation blocked)
 
-- establish the strict TypeScript application, lockfile, deterministic quality
-  commands, CI, environment configuration, and browser test shell;
-- create accessible responsive design tokens and the shared application shell;
-- centralize API transport around the pinned OpenAPI contract; and
-- expose useful health/readiness feedback while later capabilities remain
-  honestly unavailable.
+The accepted foundation includes the strict TypeScript App Router application,
+lockfile, deterministic format/lint/type/test/build commands, pull-request CI,
+environment configuration, accessible responsive design tokens, and the shared
+application shell. API origin handling, transport, response validation,
+cancellation, timeout behavior, and error mapping are centralized around the
+health-only pinned contract. The shell exposes useful readiness and retry
+feedback while later capabilities remain honestly unavailable.
+
+Automated browser acceptance is not installed or run in CI. The browser card
+remains explicitly blocked by the decision not to add browser-dependent tests;
+the accepted manual browser evidence is recorded in the task history.
 
 ### 0.2 — Workspace and source setup
 

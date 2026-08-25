@@ -1,26 +1,40 @@
 # Frontend Architecture
 
-**Status:** controlling initial direction; application code not yet implemented
-**Updated:** 2026-08-19
+**Status:** controlling accepted foundation architecture; later product slices planned
+**Updated:** 2026-08-25
 
 ## Current reality
 
-The repository currently contains instructions, documentation, a task queue,
-and a pinned OpenAPI snapshot. The application scaffold is the next ready task.
-The backend contract currently contains only health endpoints.
+The repository contains an accepted strict TypeScript Next.js App Router
+foundation. It renders an accessible responsive application shell, reports
+backend readiness, offers a retry when readiness is unavailable, and presents
+later product surfaces as unavailable.
 
-## Initial direction
+The centralized API boundary validates the backend origin and readiness
+response, applies a request timeout, preserves caller cancellation, and maps
+configuration, HTTP, malformed-response, timeout, cancellation, and transport
+failures to safe frontend errors. The pinned backend contract still contains
+only `GET /health/live` and `GET /health/ready`; the shell calls only the
+readiness endpoint.
 
-Use a strict TypeScript browser application with an architecture proportional
-to the first product slice. Next.js App Router is the preferred starting point
-unless an accepted local decision demonstrates a better fit.
+## Accepted foundation
 
-Keep responsibilities explicit:
+The application uses a strict TypeScript Next.js App Router architecture
+proportional to the implemented slice:
 
 ```text
-route/layout
-  -> feature or page component
-  -> frontend API adapter
+src/app/                 route, layout, and global styles
+src/components/          application shell and readiness presentation
+src/lib/api/             shared transport and health adapter
+test/                    focused adapter and contract tests
+```
+
+The accepted request path keeps responsibilities explicit:
+
+```text
+server-rendered home route
+  -> readiness adapter
+  -> shared API transport
   -> generated/pinned HTTP contract
   -> Contour backend
 ```
@@ -30,9 +44,10 @@ authorization and invariants remain authoritative.
 
 ## Rendering and state
 
-Prefer Server Components for content that does not require browser interaction.
-Use Client Components for the smallest subtree that needs events, browser APIs,
-local interactive state, or effects.
+The home route and application shell remain Server Components. The readiness
+panel is the small Client Component boundary needed for its browser reload
+action. Future content should remain server-rendered unless interaction or a
+browser API requires a client boundary.
 
 Keep server data separate from UI state. Prefer local state for local behavior,
 URL state for shareable navigation and filters, and a dedicated shared-state
@@ -46,13 +61,15 @@ backend-generated contract. Synchronization procedures live in
 [the contract guide](../../contracts/README.md).
 
 All base URL handling, paths, request serialization, response validation,
-cancellation, and stable error translation belong in one API boundary, expected
-under `src/lib/api/` once the application exists. Components consume typed,
-domain-oriented results rather than assembling URLs or parsing arbitrary JSON.
+cancellation, timeout behavior, and stable error translation belong in the
+existing `src/lib/api/` boundary. Components consume typed, domain-oriented
+results rather than assembling URLs or parsing arbitrary JSON.
 
-Generate wire types from OpenAPI when the project selects tooling. Keep view
-models separate when UI semantics differ. Contract types do not replace runtime
-validation at an untrusted network boundary.
+The health adapter currently defines its narrow wire type locally and validates
+the response at runtime. Generate broader wire types from OpenAPI only after
+the project selects tooling and the corresponding product contract is
+published. Keep view models separate when UI semantics differ; contract types
+do not replace runtime validation at an untrusted network boundary.
 
 ## Product shell
 
