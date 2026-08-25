@@ -1,7 +1,7 @@
 # Completed Frontend Task Log
 
 **Status:** append-only execution summary
-**Updated:** 2026-08-19
+**Updated:** 2026-08-25
 
 After a reviewer accepts a task, record its ID, acceptance date, concise outcome,
 and strongest durable review evidence. This is not a roadmap or changelog. Do
@@ -15,3 +15,11 @@ unpublished product surfaces unavailable, while the centralized health adapter
 validates readiness responses and provides retry feedback. Review evidence:
 format, lint, strict type check, unit test, production build, pinned-contract
 comparison, and desktop/mobile browser inspection passed.
+
+## FE-P0-05 — 2026-08-25
+
+Accepted deterministic health-adapter hardening for backend-origin validation,
+ready and not-ready responses, safe error mapping, malformed responses,
+transport failure, timeout, and caller cancellation. Review evidence: pull
+request #2, frontend CI, format, lint, strict type check, seven focused tests,
+production build, and the pinned backend-contract comparison passed.
